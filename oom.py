@@ -122,11 +122,16 @@ def onMessage(msg):
             oom[mg_ip]['process_list'].append(mg.group(1))
 
         if msg.find('oom-kill:constraint=CONSTRAINT_NONE') > 0:
-            oom[mg_ip]['memcg']='host'
+            oom[mg_ip]['oom_memcg']='host'
+            mg=re.search(r'task_memcg=([^,]+)',msg)
+            oom[mg_ip]['task_memcg']=mg.group(1)
 
         if msg.find('oom-kill:constraint=CONSTRAINT_MEMCG') > 0:
             mg=re.search(r'oom_memcg=([^,]+)',msg)
-            oom[mg_ip]['memcg']=mg.group(1)
+            oom[mg_ip]['oom_memcg']=mg.group(1)
+            mg=re.search(r'task_memcg=([^,]+)',msg)
+            oom[mg_ip]['task_memcg']=mg.group(1)
+
 
         if msg.find('Killed process') > 0:
             mg=re.search(r'Killed process \d+ \((\S+)\) total-vm:\S+, anon-rss:([^,]+)',msg)
@@ -137,7 +142,8 @@ def onMessage(msg):
             oom_msg = '\n'.join(map(str, oom[mg_ip]['msg']))
             logging.error(oom[mg_ip]['hostname'])
             logging.error(oom[mg_ip]['instance'])
-            logging.error(oom[mg_ip]['memcg'])
+            logging.error(oom[mg_ip]['oom_memcg'])
+            logging.error(oom[mg_ip]['task_memcg'])
             logging.error(oom[mg_ip]['process'])
             logging.error(oom[mg_ip]['process_rss'])
             logging.error(' '.join(map(str, list(set(oom[mg_ip]['process_list'])))))
@@ -151,7 +157,8 @@ def onMessage(msg):
                         "job": "syslog-omprog",
                         "hostname": oom[mg_ip]['hostname'],
                         "instance": oom[mg_ip]['instance'],
-                        "memcg": oom[mg_ip]['memcg'],
+                        "oom_memcg": oom[mg_ip]['oom_memcg'],
+                        "task_memcg": oom[mg_ip]['task_memcg'],
                         "process": oom[mg_ip]['process'],
                         "process_rss": oom[mg_ip]['process_rss'],
                         "process_list": ' '.join(map(str, list(set(oom[mg_ip]['process_list']))))
