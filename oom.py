@@ -117,7 +117,7 @@ def onMessage(msg):
 
     if mg_ip in oom:
         oom[mg_ip]['msg'].append(msg)
-        if re.search(r'\[\s*\d+\]\s+\d+\s+\d+\s+\d+\s+\d+\s+\d+\s+\d+\s+\d+\s+\S+$',msg):
+        if re.search(r'\[\s*\d+\]\s+[\d+\s+]{7,}\S+$',msg):
             mg=re.search(r'\s+(\S+)$',msg)
             oom[mg_ip]['process_list'].append(mg.group(1))
 
