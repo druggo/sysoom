@@ -2,7 +2,8 @@
 Send details to [alertmanager](https://github.com/prometheus/alertmanager) when OOM event occurs
 ```
   "labels": {
-        "memcg": "host",
+        "oom_memcg": "host",
+        "task_memcg": "/user.slice/user-100.slice/run-wiki.scope",
         "process": "java",
         "hostname": "wiki2",
         "instance": "10.0.0.4",
