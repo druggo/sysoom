@@ -121,12 +121,12 @@ def onMessage(msg):
             mg=re.search(r'\s+(\S+)$',msg)
             oom[mg_ip]['process_list'].append(mg.group(1))
 
-        if msg.find('oom-kill:constraint=CONSTRAINT_NONE') > 0:
+        if msg.find('global_oom') > 0:
             oom[mg_ip]['oom_memcg']='host'
             mg=re.search(r'task_memcg=([^,]+)',msg)
             oom[mg_ip]['task_memcg']=mg.group(1)
 
-        if msg.find('oom-kill:constraint=CONSTRAINT_MEMCG') > 0:
+        elif msg.find('oom-kill:constraint=CONSTRAINT_MEMCG') > 0:
             mg=re.search(r'oom_memcg=([^,]+)',msg)
             oom[mg_ip]['oom_memcg']=mg.group(1)
             mg=re.search(r'task_memcg=([^,]+)',msg)
