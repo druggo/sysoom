@@ -134,7 +134,7 @@ def onMessage(msg):
 
 
         if msg.find('Killed process') > 0:
-            mg=re.search(r'Killed process \d+ \((\S+)\) total-vm:\S+, anon-rss:([^,]+)',msg)
+            mg=re.search(r'Killed process \d+ \(([^(]+)\) total-vm:\S+, anon-rss:([^,]+)',msg)
             oom[mg_ip]['process']=mg.group(1)
             oom[mg_ip]['process_rss']=mg.group(2)
 
@@ -146,7 +146,7 @@ def onMessage(msg):
             logging.error(oom[mg_ip]['task_memcg'])
             logging.error(oom[mg_ip]['process'])
             logging.error(oom[mg_ip]['process_rss'])
-            logging.error(' '.join(map(str, list(set(oom[mg_ip]['process_list'])))))
+            logging.error(' '.join(map(str, sorted(list(set(oom[mg_ip]['process_list']))))))
 
             alerts = [
                 {
@@ -161,7 +161,7 @@ def onMessage(msg):
                         "task_memcg": oom[mg_ip]['task_memcg'],
                         "process": oom[mg_ip]['process'],
                         "process_rss": oom[mg_ip]['process_rss'],
-                        "process_list": ' '.join(map(str, list(set(oom[mg_ip]['process_list']))))
+                        "process_list": ' '.join(map(str, sorted(list(set(oom[mg_ip]['process_list'])))))
                     },
                     "annotations": {
                         "summary": oom[mg_ip]['hostname'] + " OOM kill detected",
