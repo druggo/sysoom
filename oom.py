@@ -134,7 +134,7 @@ def onMessage(msg):
 
 
         if msg.find('Killed process') > 0:
-            mg=re.search(r'Killed process \d+ \(([^(]+)\) total-vm:\S+, anon-rss:([^,]+)',msg)
+            mg=re.search(r'Killed process \d+ \(([^(]+).+\) total-vm:\S+, anon-rss:([^,]+)',msg)
             oom[mg_ip]['process']=mg.group(1)
             oom[mg_ip]['process_rss']=mg.group(2)
 
