@@ -17,7 +17,7 @@ Send details to [alertmanager](https://github.com/prometheus/alertmanager) when 
 ## Basic use
   - Start sysOOM, replace 10.0.0.3 with your own alertmanager ip
 
-    ``docker run -p 5149:5149/udp --add-host alertmanager:10.0.0.3 -d --restart=always --name sysoom druggo/sysoom``
+    ``docker run -p 5149:5149/udp --add-host alertmanager:10.0.0.3 -d --restart=always --name sysoom ghcr.io/druggo/sysoom``
     
   - Forward kernel log to sysOOM, replace 10.0.0.4 with sysOOM container's host ip and reload rsyslog
 
