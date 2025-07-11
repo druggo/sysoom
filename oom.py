@@ -117,8 +117,8 @@ def onMessage(msg):
 
     if mg_ip in oom:
         oom[mg_ip]['msg'].append(msg)
-        if re.search(r'\[\s*\d+\]\s+[\d+\s+]{7,}\S+$',msg):
-            mg=re.search(r'\s+(\S+)$',msg)
+        if re.search(r'\[\s*\d+\]\s+[\d+\s+]{7,}\S+',msg):
+            mg=re.search(r'\s+(\D+\S+)$',msg)
             oom[mg_ip]['process_list'].append(mg.group(1))
 
         if msg.find('global_oom') > 0:
@@ -134,7 +134,7 @@ def onMessage(msg):
 
 
         if msg.find('Killed process') > 0:
-            mg=re.search(r'Killed process \d+ \(([^(]+).+\) total-vm:\S+, anon-rss:([^,]+)',msg)
+            mg=re.search(r'Killed process \d+ \((\S+)\) total-vm:\S+, anon-rss:([^,]+)',msg)
             oom[mg_ip]['process']=mg.group(1)
             oom[mg_ip]['process_rss']=mg.group(2)
 
