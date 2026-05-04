@@ -37,7 +37,8 @@ import json
 outfile = None
 oom = {}
 
-alertmanager_url = "http://alertmanager:9093/api/v2/alerts"
+alertmanager_url = os.environ.get("ALERTMANAGER_URL", "http://alertmanager:9093/api/v2/alerts")
+job_label = os.environ.get("JOB", "syslog-omprog")
 
 class RecoverableError(Exception):
     """An error that has caused the processing of the current message to
@@ -154,7 +155,7 @@ def onMessage(msg):
                     "labels": {
                         "alertname": "SysOOM",
                         "severity": "warning",
-                        "job": "syslog-omprog",
+                        "job": job_label,
                         "hostname": oom[mg_ip]['hostname'],
                         "instance": oom[mg_ip]['instance'],
                         "oom_memcg": oom[mg_ip]['oom_memcg'],

@@ -15,9 +15,9 @@ Send details to [alertmanager](https://github.com/prometheus/alertmanager) when 
 ```
 
 ## Basic use
-  - Start sysOOM, replace 10.0.0.3 with your own alertmanager ip
+  - Start sysOOM, customize the alertmanager URL and the job label ( Optionally, default: syslog-omprog) via environment variables
 
-    ``docker run -p 5149:5149/udp --add-host alertmanager:10.0.0.3 -d --restart=always --name sysoom ghcr.io/druggo/sysoom``
+    ``docker run -p 5149:5149/udp -e ALERTMANAGER_URL="http://10.0.0.3:9093/api/v2/alerts" -e JOB="syslog-oom" -d --restart=always --name sysoom ghcr.io/druggo/sysoom``
     
   - Forward kernel log to sysOOM, replace 10.0.0.4 with sysOOM container's host ip and reload rsyslog
 
