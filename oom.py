@@ -31,6 +31,7 @@ import logging
 import re
 import requests
 import json
+from collections import Counter
 
 
 # Global definitions specific to your plugin
@@ -147,7 +148,12 @@ def onMessage(msg):
             logging.error(oom[mg_ip]['task_memcg'])
             logging.error(oom[mg_ip]['process'])
             logging.error(oom[mg_ip]['process_rss'])
-            logging.error(' '.join(map(str, sorted(list(set(oom[mg_ip]['process_list']))))))
+            process_counts = Counter(oom[mg_ip]['process_list'])
+            process_list_str = ' '.join(
+                f"{p}*{c}" if c > 1 else p
+                for p, c in sorted(process_counts.items())
+            )
+            logging.error(process_list_str)
 
             alerts = [
                 {
@@ -162,7 +168,7 @@ def onMessage(msg):
                         "task_memcg": oom[mg_ip]['task_memcg'],
                         "process": oom[mg_ip]['process'],
                         "process_rss": oom[mg_ip]['process_rss'],
-                        "process_list": ' '.join(map(str, sorted(list(set(oom[mg_ip]['process_list'])))))
+                        "process_list": process_list_str
                     },
                     "annotations": {
                         "summary": oom[mg_ip]['hostname'] + " OOM kill detected",
